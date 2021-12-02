@@ -21,3 +21,8 @@ RUN python3 -m pip install idna
 RUN python3 -m pip install numpy
 RUN python3 -m pip install pandas
 RUN python3 -m pip install sklearn
+RUN python3 -m pip install notebook
+RUN python3 -m pip install jupyter
+RUN python3 -m pip install kaggle
+RUN python3 -m pip install setuptools
+RUN python3 -m pip install jupyterlab
