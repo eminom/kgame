@@ -19,6 +19,7 @@ RUN apt install -y vim
 RUN apt install -y git-core
 RUN apt install -y unzip
 RUN apt install -y ucommon-utils
+RUN apt install -y systemd-tests
 
 RUN curl -sSL https://bootstrap.pypa.io/get-pip.py -o get-pip.py
 RUN /usr/bin/python3.8 get-pip.py
