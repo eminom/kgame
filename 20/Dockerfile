@@ -38,3 +38,6 @@ RUN python3 -m pip install jupyter
 RUN python3 -m pip install kaggle
 RUN python3 -m pip install setuptools
 RUN python3 -m pip install jupyterlab
+RUN python3 -m pip install opencv-python
+
+RUN apt install -y libgl1-mesa-glx
