@@ -23,11 +23,17 @@ RUN apt install -y tree
 RUN apt install -y ucommon-utils
 RUN apt install -y systemd-tests
 
-RUN curl -sSL https://bootstrap.pypa.io/get-pip.py -o get-pip.py
-RUN /usr/bin/python3.8 get-pip.py
 
-#RUN rm /usr/bin/python3
-#RUN ln -s /usr/bin/python3.8 /usr/bin/python3
+# Install Python3.10
+RUN apt install -y software-properties-common
+RUN add-apt-repository -y ppa:deadsnakes/ppa
+RUN apt install -y python3.10
+
+RUN curl -sSL https://bootstrap.pypa.io/get-pip.py -o get-pip.py
+RUN /usr/bin/python3.10 get-pip.py
+
+RUN rm /usr/bin/python3
+RUN ln -s /usr/bin/python3.10 /usr/bin/python3
 
 RUN python3 -m pip install six
 RUN python3 -m pip install idna
