@@ -1,0 +1,101 @@
+#!/bin/bash
+
+NAME=$(whoami|awk -F. '{print $NF$1}')
+
+
+DOCKER_CONTAINER_NAME="${NAME}_kgame"
+
+
+#DOCKER_IMG="192.168.112.73:443/ubuntu_1604/dev:1.3"
+#DOCKER_IMG="geosx/ubuntu18.04-gcc8"
+#TAG="170-701"
+DOCKER_IMG="kgame"
+TAG="101"
+
+
+if [[ x$(systemd-detect-virt) != xnone ]]; then
+  echo not a proper env
+  exit 1
+fi
+
+docker_pull() {
+  if [[ x${DOCKER_IMG} == xkgame ]]; then
+    echo shall be create locally
+    return
+  fi
+  local HAS=$(docker image ls|awk '{print $1}'|grep ${DOCKER_IMG})
+  if [[ x${HAS} == x ]]; then
+    echo no such image, pull a new one ahora
+    docker pull ${DOCKER_IMG}:${TAG}
+  else
+    echo image ready
+  fi
+}
+
+docker_run() {
+  # UID is built-in
+  local UIDX=$(id -u)
+  local UIG=$(id -g)
+  local CORES=$(cat /proc/cpuinfo | grep processor | wc -l)
+  local MAX_CORE_ID=$(expr ${CORES} - 1)
+
+  #echo CORES=${CORES}
+  #echo MAX_CORE_ID=${MAX_CORE_ID}
+
+  set -x
+  docker run -tdi --name "${DOCKER_CONTAINER_NAME}" -v ~/.ssh:/root/.ssh \
+     -e _user=${USER} \
+     -e _uid=${UID} \
+     -e _uig=${UIG} \
+     --cpuset-cpus=5-${MAX_CORE_ID} \
+     -v ${HOME}:${HOME} -e HOME=${HOME} -e TEST_TEMPDIR=${HOME} \
+     -w ${HOME} \
+     -p 12306:8887 \
+     -p 12307:8888 \
+     -p 12308:8889 \
+     -p 12309:8890 \
+     ${DOCKER_IMG}:${TAG}
+
+  set +x
+}
+
+docker_enter() {
+  local EXISTING=$(docker container list -q -f name=${DOCKER_CONTAINER_NAME})
+  if [[ x${EXISTING} == x ]]; then
+    echo no running instance 1>&2
+    exit 1
+  fi
+  echo enter docker now ...\>\>\>
+  docker exec -it ${DOCKER_CONTAINER_NAME} /bin/bash
+  echo docker job done
+  exit 0
+}
+
+docker_check() {
+  local XC=$(docker container list -q -f name=${DOCKER_CONTAINER_NAME})
+  if [[ x${XC} != x ]]; then
+    echo docker container exist
+  else 
+    XC=$(docker container list -a -q -f name=${DOCKER_CONTAINER_NAME})
+    if [[ x${XC} != x ]]; then
+      echo restart exitsing one
+      docker restart ${DOCKER_CONTAINER_NAME}
+    else
+      echo "container not exist for ${DOCKER_CONTAINER_NAME}"
+      if [[ x${1} == xstart ]]; then
+         echo starting a new instance
+         docker_run
+      fi
+    fi
+  fi
+  docker_enter
+}
+
+
+docker_pull
+docker_check $@
+
+
+
+
+

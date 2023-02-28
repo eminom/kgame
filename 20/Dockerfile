@@ -4,7 +4,7 @@ ENV TZ=Asia/Shanghai
 
 MAINTAINER baihai
 
-RUN apt update
+RUN apt update -y
 RUN apt install -y apt-utils
 RUN apt install -y build-essential
 RUN apt install -y manpages-dev
@@ -18,6 +18,8 @@ RUN apt install -y python3-apt
 RUN apt install -y vim
 RUN apt install -y git-core
 RUN apt install -y unzip
+RUN apt install -y sudo
+RUN apt install -y tree
 RUN apt install -y ucommon-utils
 RUN apt install -y systemd-tests
 
@@ -39,5 +41,5 @@ RUN python3 -m pip install kaggle
 RUN python3 -m pip install setuptools
 RUN python3 -m pip install jupyterlab
 RUN python3 -m pip install opencv-python
-
+RUN python3 -m pip install xgboost
 RUN apt install -y libgl1-mesa-glx

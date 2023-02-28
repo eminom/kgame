@@ -1,0 +1,18 @@
+#!/bin/bash
+
+if [[ x$(systemd-detect-virt) != xdocker ]]; then
+  echo not a suitable environment 1>&2
+  echo shall be in a docker 1>&2
+  exit 1
+fi
+
+LOG="$(date +%H%M%S_%Y%m%d_)${RANDOM}_note.log"
+LOGD=${HOME}/logs/jn
+
+mkdir -p ${LOGD}
+
+LOG=${LOGD}/${LOG}
+
+nohup jupyter notebook --allow-root 2>&1 >${LOG} &
+
+

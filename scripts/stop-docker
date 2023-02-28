@@ -1,0 +1,11 @@
+#!/bin/bash
+
+NAME=$(whoami|awk -F. '{print $NF$1}')
+CONT_NAME=${NAME}_kgame
+echo to stop ${CONT_NAME}
+docker stop ${CONT_NAME}
+
+if [[ x$1 == xdel ]]; then
+  echo remove it now
+  docker rm ${CONT_NAME}
+fi
