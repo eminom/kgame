@@ -19,3 +19,33 @@ userdel xxx
 to remove the old one
 
 
+Some packages are very larage, and may not be recommended to installed into the initiative container
+Such as xgboost
+
+Consider install PyTorch, imageio manually
+
+
+Install libgl1-mesa-dev in order to solve the "import cv2" problem
+
+* Recommended packages
+
+- PyTorch(Cpu version, most probably)
+- python3 -m pip install imageio
+- python3 -m pip install torchviz
+- apt install -y wget
+- build graphviz from source and install
+- python3 -m pip install tensorboard
+
+
+
+
+* Stop and rerun due to new port mapping
+
+```bash
+docker stop A
+docker commit A imageA #
+docker rm A
+docker run -d -p 80:80 --name A imageA
+```
+
+

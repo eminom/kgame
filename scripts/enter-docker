@@ -12,6 +12,11 @@ DOCKER_CONTAINER_NAME="${NAME}_kgame"
 DOCKER_IMG="kgame"
 TAG="101"
 
+if [[ x$1 =~ xkgame_.* ]]; then
+	DOCKER_IMG="${1}"
+	TAG="latest"
+	shift
+fi
 
 if [[ x$(systemd-detect-virt) != xnone ]]; then
   echo not a proper env
@@ -19,7 +24,7 @@ if [[ x$(systemd-detect-virt) != xnone ]]; then
 fi
 
 docker_pull() {
-  if [[ x${DOCKER_IMG} == xkgame ]]; then
+  if [[ x${DOCKER_IMG} =~ xkgame_.* ]]; then
     echo shall be create locally
     return
   fi
@@ -54,6 +59,9 @@ docker_run() {
      -p 12307:8888 \
      -p 12308:8889 \
      -p 12309:8890 \
+     -p 12410:6006 \
+     -p 12411:6007 \
+     -p 12412:6008 \
      ${DOCKER_IMG}:${TAG}
 
   set +x
