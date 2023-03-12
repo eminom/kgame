@@ -35,8 +35,12 @@ Install libgl1-mesa-dev in order to solve the "import cv2" problem
 - apt install -y wget
 - build graphviz from source and install
 - python3 -m pip install tensorboard
+- python3 -m pip install gym
+- python3 -m pip install pygame
+- python3 -m pip install seaborn
+* And also
 
-
+- install kaggle-environments
 
 
 * Stop and rerun due to new port mapping
