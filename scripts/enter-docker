@@ -49,6 +49,7 @@ docker_run() {
 
   set -x
   docker run -tdi --name "${DOCKER_CONTAINER_NAME}" -v ~/.ssh:/root/.ssh \
+     --hostname KGAME \
      -e _user=${USER} \
      -e _uid=${UID} \
      -e _uig=${UIG} \
