@@ -36,6 +36,7 @@ Install libgl1-mesa-dev in order to solve the "import cv2" problem
 - build graphviz from source and install
 - python3 -m pip install tensorboard
 - python3 -m pip install gym
+- python3 -m pip install gymnasium
 - python3 -m pip install pygame
 - python3 -m pip install seaborn
 * And also
@@ -52,4 +53,14 @@ docker rm A
 docker run -d -p 80:80 --name A imageA
 ```
 
+* Installation of stable-baselines3 (SB3)
+pip install git+https://github.com/carlosluis/stable-baselines3@fix_tests
+(Stackoverflow)[https://stackoverflow.com/questions/75421424/cant-install-stable-baselines3extra]
+stable-baselines3 python3.10
 
+
+* Installtion package built from source
+apt install -y python3.10-dev
+python3 -m pip install vec-noise
+and also
+pip install pettingzoo
